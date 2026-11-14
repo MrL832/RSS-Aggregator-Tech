@@ -2,6 +2,7 @@
   "title": "Tech Pulse",
   "subtitle": "Your daily briefing on tech news and podcasts",
   "itemLimit": 12,
+  "proxyTimeoutMs": 12000,
   "proxies": [
     { "name": "AllOrigins", "endpoint": "https://api.allorigins.win/raw?url={url}" },
     { "name": "CodeTabs", "endpoint": "https://api.codetabs.com/v1/proxy?quest={url}" },

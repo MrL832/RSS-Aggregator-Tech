@@ -117,16 +117,20 @@ window.RSS = (function () {
 
   /* ---------- fetching ---------- */
 
-  function fetchSource(source, proxies, limit) {
+  function fetchSource(source, proxies, limit, timeoutMs) {
     var lastError = null;
 
-    // Try each proxy in order until one returns parseable items.
+    // Try each proxy in order until one returns parseable items. Each attempt is
+    // bounded by a timeout so a hanging proxy can't freeze the whole page.
     function attempt(i) {
       if (i >= proxies.length) {
         return Promise.reject(lastError || new Error(source.name + ": all proxies failed"));
       }
       var proxy = proxies[i];
-      return fetch(proxyUrl(proxy, source.rss_url), { redirect: "follow" })
+      return fetch(proxyUrl(proxy, source.rss_url), {
+        redirect: "follow",
+        signal: AbortSignal.timeout(timeoutMs),
+      })
         .then(function (res) {
           if (!res.ok) throw new Error(proxy.name + ": HTTP " + res.status);
           return proxy.json ? res.json().then(function (d) { return d[proxy.json]; }) : res.text();
@@ -156,6 +160,7 @@ window.RSS = (function () {
     var sources = (config && config.sources) || [];
     var proxies = (config && config.proxies) || [];
     var limit = (config && config.itemLimit) || 12;
+    var timeoutMs = (config && config.proxyTimeoutMs) || 12000;
 
     if (!proxies.length) {
       return Promise.reject(new Error("No CORS proxies configured in config.json"));
@@ -163,7 +168,7 @@ window.RSS = (function () {
 
     return Promise.allSettled(
       sources.map(function (source) {
-        return fetchSource(source, proxies, limit);
+        return fetchSource(source, proxies, limit, timeoutMs);
       })
     ).then(function (settled) {
       var items = [];

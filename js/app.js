@@ -180,6 +180,7 @@
   function renderLoading() {
     $("#feed").className = "mt-6 grid gap-4 sm:grid-cols-2";
     $("#feed").innerHTML =
+      '<p class="sm:col-span-2 text-xs text-zinc-500">Fetching feeds through CORS proxies — this can take a few seconds…</p>' +
       '<div class="h-32 animate-pulse rounded-2xl border border-white/10 bg-white/[0.03]"></div>'.repeat(4);
     $("#count").textContent = "";
     $("#updated").textContent = "";

@@ -1,5 +1,8 @@
 const fs = require("node:fs");
+const http = require("node:http");
+const https = require("node:https");
 const path = require("node:path");
+const { URL } = require("node:url");
 const Parser = require("rss-parser");
 const { HttpsProxyAgent } = require("https-proxy-agent");
 
@@ -11,13 +14,8 @@ const proxyUrl =
   process.env.https_proxy ||
   process.env.HTTP_PROXY ||
   process.env.http_proxy;
+const requestAgent = proxyUrl ? new HttpsProxyAgent(proxyUrl) : undefined;
 const parser = new Parser({
-  timeout: 12000,
-  headers: {
-    "User-Agent": "TechPulseRSS/1.0 (+https://github.com/)",
-    Accept: "application/rss+xml, application/atom+xml, application/xml, text/xml",
-  },
-  requestOptions: proxyUrl ? { agent: new HttpsProxyAgent(proxyUrl) } : {},
   customFields: {
     item: [
       ["itunes:duration", "itunesDuration"],
@@ -25,6 +23,55 @@ const parser = new Parser({
     ],
   },
 });
+
+function downloadXml(feedUrl, redirects = 0) {
+  return new Promise((resolve, reject) => {
+    const url = new URL(feedUrl);
+    const transport = url.protocol === "https:" ? https : http;
+    const request = transport.get(
+      url,
+      {
+        agent: requestAgent,
+        headers: {
+          "User-Agent": "TechPulseRSS/1.0 (+https://github.com/)",
+          Accept: "application/rss+xml, application/atom+xml, application/xml, text/xml",
+        },
+      },
+      (response) => {
+        const status = response.statusCode || 0;
+        if (status >= 300 && status < 400 && response.headers.location) {
+          response.resume();
+          if (redirects >= 5) {
+            reject(new Error("Too many redirects"));
+            return;
+          }
+          resolve(downloadXml(new URL(response.headers.location, url).toString(), redirects + 1));
+          return;
+        }
+        if (status < 200 || status >= 300) {
+          response.resume();
+          reject(new Error(`HTTP ${status}`));
+          return;
+        }
+
+        let xml = "";
+        response.setEncoding("utf8");
+        response.on("data", (chunk) => {
+          xml += chunk;
+        });
+        response.on("end", () => resolve(xml));
+        response.on("aborted", () => reject(new Error("Feed response aborted")));
+        response.on("error", reject);
+      }
+    );
+    const timeout = setTimeout(
+      () => request.destroy(new Error("Feed request timed out after 12000ms")),
+      12000
+    );
+    request.on("error", reject);
+    request.on("close", () => clearTimeout(timeout));
+  });
+}
 
 function normalizeDuration(raw) {
   if (!raw) return "";
@@ -48,7 +95,8 @@ async function fetchSource(source) {
   let lastError;
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
-      feed = await parser.parseURL(source.rss_url);
+      const xml = await downloadXml(source.rss_url);
+      feed = await parser.parseString(xml);
       break;
     } catch (error) {
       lastError = error;

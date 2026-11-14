@@ -43,6 +43,11 @@
       "name": "The Changelog",
       "category": "Podcast",
       "rss_url": "https://changelog.com/podcast/feed"
+    },
+    {
+      "name": "TWiT (This Week in Tech)",
+      "category": "Podcast",
+      "rss_url": "https://feeds.twit.tv/twit.xml"
     }
   ]
 }

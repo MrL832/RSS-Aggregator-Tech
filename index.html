@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tech Pulse — Daily Briefing</title>
+    <meta
+      name="description"
+      content="A personal daily briefing of the latest tech news and podcast episodes."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334d399' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 12h-4l-3 9L9 3l-3 9H2'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="min-h-screen bg-zinc-950 text-zinc-100 antialiased">
+    <div class="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8">
+      <header class="flex items-center gap-3">
+        <span
+          id="brand-icon"
+          class="grid h-10 w-10 place-items-center rounded-xl bg-emerald-500/10 text-emerald-400 ring-1 ring-inset ring-emerald-500/20"
+        ></span>
+        <div class="mr-auto">
+          <h1 id="app-title" class="text-lg font-semibold tracking-tight text-zinc-50">
+            Tech Pulse
+          </h1>
+          <p id="app-subtitle" class="text-xs text-zinc-500">Your daily briefing</p>
+        </div>
+        <button
+          id="refresh"
+          type="button"
+          class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs font-medium text-zinc-300 transition-colors hover:border-white/20 hover:text-white disabled:cursor-not-allowed"
+        >
+          <span id="refresh-icon" class="inline-flex"></span><span>Refresh</span>
+        </button>
+      </header>
+
+      <section class="mt-12">
+        <p class="text-xs font-medium uppercase tracking-[0.18em] text-emerald-400/80">
+          Daily Briefing
+        </p>
+        <h2 id="brief-date" class="mt-1 text-2xl font-semibold tracking-tight text-zinc-50 sm:text-3xl"></h2>
+        <p id="brief-sub" class="mt-2 max-w-2xl text-sm text-zinc-400"></p>
+
+        <div class="mt-6 grid max-w-md grid-cols-3 gap-3">
+          <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+            <div id="stat-total" class="text-xl font-semibold text-zinc-50">0</div>
+            <div class="text-[11px] uppercase tracking-wide text-zinc-500">Items</div>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+            <div id="stat-news" class="text-xl font-semibold text-sky-400">0</div>
+            <div class="text-[11px] uppercase tracking-wide text-zinc-500">News</div>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-white/[0.03] p-3">
+            <div id="stat-podcasts" class="text-xl font-semibold text-violet-400">0</div>
+            <div class="text-[11px] uppercase tracking-wide text-zinc-500">Podcasts</div>
+          </div>
+        </div>
+      </section>
+
+      <div id="notice" class="mt-8"></div>
+
+      <section class="mt-8 flex flex-wrap items-center gap-3">
+        <div
+          id="filters"
+          role="tablist"
+          aria-label="Filter the feed"
+          class="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1"
+        ></div>
+        <span id="count" class="text-xs text-zinc-500"></span>
+        <span id="updated" class="ml-auto text-xs text-zinc-600"></span>
+      </section>
+
+      <main id="feed" class="mt-6 grid gap-4 sm:grid-cols-2"></main>
+
+      <footer class="mt-16 border-t border-white/5 pt-6 text-xs text-zinc-600">
+        <span id="footer-text"></span>
+      </footer>
+    </div>
+
+    <script src="./js/icons.js"></script>
+    <script src="./js/rss.js"></script>
+    <script src="./js/app.js"></script>
+  </body>
+</html>

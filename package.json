@@ -1,28 +1,15 @@
 {
   "name": "tech-pulse",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "A frontend-only tech news & podcast aggregator for GitHub Pages.",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "lucide-react": "^1.73.0",
-    "next": "16.4.6",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "rss-parser": "^3.13.0"
+    "build:css": "tailwindcss -i ./src/input.css -o ./styles.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./styles.css --watch",
+    "dev": "npx --yes serve . -l 3000"
   },
   "devDependencies": {
-    "@tailwindcss/turbopack": "4.3.3",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.4.6",
-    "tailwindcss": "4.3.3",
-    "typescript": "^5"
+    "@tailwindcss/cli": "^4.1.0",
+    "tailwindcss": "^4.1.0"
   }
 }

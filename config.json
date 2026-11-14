@@ -1,0 +1,29 @@
+{
+  "title": "Tech Pulse",
+  "subtitle": "Your daily briefing on tech news and podcasts",
+  "itemLimit": 12,
+  "proxies": [
+    { "name": "AllOrigins", "endpoint": "https://api.allorigins.win/raw?url={url}" },
+    { "name": "CodeTabs", "endpoint": "https://api.codetabs.com/v1/proxy?quest={url}" },
+    { "name": "corsproxy.io", "endpoint": "https://corsproxy.io/?url={url}" },
+    { "name": "ThingProxy", "endpoint": "https://thingproxy.freeboard.io/fetch/{rawurl}" },
+    { "name": "AllOrigins (JSON)", "endpoint": "https://api.allorigins.win/get?url={url}", "json": "contents" }
+  ],
+  "sources": [
+    {
+      "name": "Ars Technica",
+      "category": "News",
+      "rss_url": "https://feeds.arstechnica.com/arstechnica/index"
+    },
+    {
+      "name": "The Verge",
+      "category": "News",
+      "rss_url": "https://www.theverge.com/rss/index.xml"
+    },
+    {
+      "name": "Darknet Diaries",
+      "category": "Podcast",
+      "rss_url": "https://feeds.megaphone.fm/darknetdiaries"
+    }
+  ]
+}

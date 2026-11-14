@@ -1,0 +1,17 @@
+[
+  {
+    "name": "TechCrunch",
+    "category": "News",
+    "rss_url": "https://techcrunch.com/feed/"
+  },
+  {
+    "name": "The Verge",
+    "category": "News",
+    "rss_url": "https://www.theverge.com/rss/index.xml"
+  },
+  {
+    "name": "Darknet Diaries",
+    "category": "Podcast",
+    "rss_url": "https://feeds.megaphone.fm/darknetdiaries"
+  }
+]

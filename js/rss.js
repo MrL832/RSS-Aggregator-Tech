@@ -119,17 +119,19 @@ window.RSS = (function () {
 
   function fetchSource(source, proxies, limit, timeoutMs) {
     var lastError = null;
+    var deadline = Date.now() + timeoutMs;
 
     // Try each proxy in order until one returns parseable items. Each attempt is
-    // bounded by a timeout so a hanging proxy can't freeze the whole page.
+    // bounded by the remaining source budget so failures cannot stack timeouts.
     function attempt(i) {
-      if (i >= proxies.length) {
+      var remainingMs = deadline - Date.now();
+      if (i >= proxies.length || remainingMs <= 0) {
         return Promise.reject(lastError || new Error(source.name + ": all proxies failed"));
       }
       var proxy = proxies[i];
       return fetch(proxyUrl(proxy, source.rss_url), {
         redirect: "follow",
-        signal: AbortSignal.timeout(timeoutMs),
+        signal: AbortSignal.timeout(remainingMs),
       })
         .then(function (res) {
           if (!res.ok) throw new Error(proxy.name + ": HTTP " + res.status);

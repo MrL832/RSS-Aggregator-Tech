@@ -30,6 +30,11 @@
       "rss_url": "https://www.engadget.com/rss.xml"
     },
     {
+      "name": "The Register",
+      "category": "News",
+      "rss_url": "https://www.theregister.com/headlines.atom"
+    },
+    {
       "name": "Darknet Diaries",
       "category": "Podcast",
       "rss_url": "https://feeds.megaphone.fm/darknetdiaries"

@@ -2,8 +2,9 @@
   "name": "tech-pulse",
   "version": "1.0.0",
   "private": true,
-  "description": "A frontend-only tech news & podcast aggregator for GitHub Pages.",
+  "description": "A static tech news and podcast briefing published to GitHub Pages.",
   "scripts": {
+    "fetch:feeds": "node scripts/fetch-feeds.cjs",
     "build:css": "tailwindcss -i ./src/input.css -o ./styles.css --minify",
     "watch:css": "tailwindcss -i ./src/input.css -o ./styles.css --watch",
     "dev": "npx --yes serve . -l 3000"
@@ -11,5 +12,9 @@
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.0",
     "tailwindcss": "^4.1.0"
+  },
+  "dependencies": {
+    "https-proxy-agent": "^9.1.0",
+    "rss-parser": "^3.13.0"
   }
 }

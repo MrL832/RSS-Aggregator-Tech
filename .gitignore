@@ -1,3 +1,4 @@
 node_modules/
 _site/
+/feed.json
 .DS_Store

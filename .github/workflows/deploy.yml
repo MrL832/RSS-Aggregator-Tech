@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
 
 permissions:
   contents: read
@@ -28,13 +30,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Fetch and parse RSS feeds
+        run: npm run fetch:feeds
+
       - name: Build Tailwind CSS
         run: npm run build:css
 
       - name: Assemble static site
         run: |
           mkdir -p _site
-          cp index.html config.json styles.css _site/
+          cp index.html config.json feed.json styles.css _site/
           cp -r js _site/
 
       - uses: actions/configure-pages@v5
